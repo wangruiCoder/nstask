@@ -5,19 +5,19 @@ import cn.core.entity.BaseObj;
 import java.util.Date;
 
 public class UserObj extends BaseObj {
-    private int userId;
+    private Integer userId;
     private String userName;
     private String passWord;
     private int errLoginCount;
     private Date lastEditPassWordTime;
-    private int accountStatue;
+    private Integer accountStatue;
 
 
     public int getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(Integer userId) {
         this.userId = userId;
     }
 
@@ -57,7 +57,7 @@ public class UserObj extends BaseObj {
         return accountStatue;
     }
 
-    public void setAccountStatue(int accountStatue) {
+    public void setAccountStatue(Integer accountStatue) {
         this.accountStatue = accountStatue;
     }
 

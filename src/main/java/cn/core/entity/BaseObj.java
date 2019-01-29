@@ -4,18 +4,18 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class BaseObj implements Serializable {
-    private int creatorId;
+    private Integer creatorId;
     private Date creatorTime;
-    private int modifierId;
+    private Integer modifierId;
     private Date modifierTime;
-    private int deleteId;
+    private Integer deleteId;
     private Date deleteTime;
 
     public int getCreatorId() {
         return creatorId;
     }
 
-    public void setCreatorId(int creatorId) {
+    public void setCreatorId(Integer creatorId) {
         this.creatorId = creatorId;
     }
 
@@ -31,7 +31,7 @@ public class BaseObj implements Serializable {
         return modifierId;
     }
 
-    public void setModifierId(int modifierId) {
+    public void setModifierId(Integer modifierId) {
         this.modifierId = modifierId;
     }
 
@@ -47,7 +47,7 @@ public class BaseObj implements Serializable {
         return deleteId;
     }
 
-    public void setDeleteId(int deleteId) {
+    public void setDeleteId(Integer deleteId) {
         this.deleteId = deleteId;
     }
 
