@@ -14,25 +14,47 @@
 
     <!-- Activate Cocoon Spring Configurator -->
     <context:annotation-config/>
+    <bean id="properties" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="location" value="classpath:conf/jdbc.properties"></property>
+    </bean>
     <!--引入数据库配置文件-->
-    <!--<import resource="classpath:conf/ctx-db-resource.xml"/>-->
+    <import resource="classpath:conf/ctx-db-resource.xml"/>
     <!-- 引入mybatis文件 -->
     <!--<import resource="classpath:conf/ctx-spring-mybatis.xml"/>-->
+    <import resource="classpath:conf/ctx-db-redis.xml"/>
 
-   <!-- <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-        <property name="dataSource" ref="dataSource"/>
-    </bean>
-    <tx:advice id="txAdvice" transaction-manager="transactionManager">
-        <tx:attributes>
-            <tx:method name="add*" propagation="REQUIRED"/>
-            <tx:method name="del*" propagation="REQUIRED"/>
-            <tx:method name="put*" propagation="REQUIRED"/>
-            <tx:method name="get*" propagation="SUPPORTS" read-only="true"/>
-            <tx:method name="query*" propagation="SUPPORTS" read-only="true"/>
-        </tx:attributes>
-    </tx:advice>
-    <aop:config>
-        <aop:pointcut id="txPointCut" expression="execution (* cn.newstrength.service.impl.*(..))"/>
-        <aop:advisor advice-ref="txAdvice" pointcut-ref="txPointCut"/>
-    </aop:config>-->
+    <bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate" >
+        <property name="connectionFactory" ref="jedisConnectionFactory" />
+        <!--如果不配置Serializer，那么存储的时候缺省使用String，如果用User类型存储，那么会提示错误User can't cast to String！！  -->
+        <property name="keySerializer" >
+            <bean class="org.springframework.data.redis.serializer.StringRedisSerializer" />
+        </property>
+        <property name="valueSerializer" >
+            <bean class="org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer" />
+        </property>
+        <property name="hashKeySerializer">
+            <bean class="org.springframework.data.redis.serializer.StringRedisSerializer"/>
+        </property>
+        <property name="hashValueSerializer">
+            <bean class="org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer"/>
+        </property>
+        <!--开启事务  -->
+        <property name="enableTransactionSupport" value="true"></property>
+    </bean >
+    <!-- <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+         <property name="dataSource" ref="dataSource"/>
+     </bean>
+     <tx:advice id="txAdvice" transaction-manager="transactionManager">
+         <tx:attributes>
+             <tx:method name="add*" propagation="REQUIRED"/>
+             <tx:method name="del*" propagation="REQUIRED"/>
+             <tx:method name="put*" propagation="REQUIRED"/>
+             <tx:method name="get*" propagation="SUPPORTS" read-only="true"/>
+             <tx:method name="query*" propagation="SUPPORTS" read-only="true"/>
+         </tx:attributes>
+     </tx:advice>
+     <aop:config>
+         <aop:pointcut id="txPointCut" expression="execution (* cn.newstrength.service.impl.*(..))"/>
+         <aop:advisor advice-ref="txAdvice" pointcut-ref="txPointCut"/>
+     </aop:config>-->
 </beans>

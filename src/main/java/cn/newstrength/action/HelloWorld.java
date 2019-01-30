@@ -9,9 +9,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 public class HelloWorld {
 
-    @Autowired
-    private UserService userService;
-
     @RequestMapping("/hello")
     @ResponseBody
     public String getHellow(){
