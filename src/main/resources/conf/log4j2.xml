@@ -8,7 +8,6 @@
             %M：输出产生日志信息的方法名。-->
             <!--"%highlight{%d{HH:mm:ss.SSS} %-5level %logger{36}.%M() @%L - %msg%n}{FATAL=Bright Red, ERROR=Bright Magenta, WARN=Bright Yellow, INFO=Bright Green, DEBUG=Bright Cyan, TRACE=Bright White}"-->
             <PatternLayout pattern="%d{HH:mm:ss.SSS} %-5level %class{36}.%M @%L :-> %msg%xEx%n"/>
-
         </Console>
     </Appenders>
     <!--trace<debug<info<warn<error<fatal-->
@@ -25,6 +24,7 @@
         <logger name="org.springframework.beans" level="info"/>
         <logger name="org.springframework.context" level="info"/>
         <logger name="org.springframework.web" level="info"/>
+        <logger name="cn.newstrength.*" level="info"/>
         <Root level="INFO">
             <AppenderRef ref="Console" />
         </Root>
