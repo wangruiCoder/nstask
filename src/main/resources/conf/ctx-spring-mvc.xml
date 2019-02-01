@@ -17,6 +17,13 @@
         <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
     </context:component-scan>
 
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/*"/>
+            <mvc:exclude-mapping path="/login"/>
+            <bean class="cn.newstrength.interceptor.SessionInterceptor"/>
+        </mvc:interceptor>
+    </mvc:interceptors>
     <mvc:annotation-driven>
     <!-- 设置springMVC返回统一的时间格式，指定格式的时间不受影响，同时设置统一的GMT+8，解决夏令时差8个小时的问题 -->
         <mvc:message-converters>

@@ -1,20 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app version="2.4"
-         xmlns="http://java.sun.com/xml/ns/j2ee"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
+<web-app version="3.0">
   <display-name>task</display-name>
   <listener>
     <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
   </listener>
 
+  <!-- 自定义日志监听器 -->
   <listener>
-    <listener-class>org.apache.logging.log4j.web.Log4jServletContextListener</listener-class>
+    <listener-class>cn.newstrength.listener.Log4j2CustomContextListener</listener-class>
   </listener>
   <context-param>
     <description>日志配置文件的路径</description>
     <param-name>log4jConfiguration</param-name>
-    <param-value>classpath*:conf/log4j.properties</param-value>
+    <param-value>classpath:conf/log4j2.xml</param-value>
   </context-param>
 
   <!-- 配置请求乱码问题 org.springframework.web.filter.CharacterEncodingFilter-->
@@ -36,6 +34,7 @@
     <param-value>classpath*:conf/applicationContext.xml</param-value>
   </context-param>
 
+  <!-- SpringMvc核心配置 -->
   <servlet>
     <servlet-name>dispatcher</servlet-name>
     <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>

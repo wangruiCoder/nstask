@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Configuration status="warn">
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <!--输出日志的格式
+            %L:：输出代码中的行号。
+            %M：输出产生日志信息的方法名。-->
+            <!--"%highlight{%d{HH:mm:ss.SSS} %-5level %logger{36}.%M() @%L - %msg%n}{FATAL=Bright Red, ERROR=Bright Magenta, WARN=Bright Yellow, INFO=Bright Green, DEBUG=Bright Cyan, TRACE=Bright White}"-->
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} %-5level %class{36}.%M @%L :-> %msg%xEx%n"/>
+        </Console>
+    </Appenders>
+    <!--trace<debug<info<warn<error<fatal-->
+    <!--然后定义logger，只有定义了logger并引入的appender，appender才会生效-->
+    <!--过滤掉spring和mybatis的一些无用的DEBUG信息-->
+    <!--log4j的additivity属性： additivity它是 子Logger 是否继承 父Logger 的 输出源（appender） 的标志位。
+    具体说，默认情况下子Logger会继承父Logger的appender，也就是说子Logger会在父Logger的appender里输出。
+    若是additivity设为false，则子Logger只会在自己的appender里输出，而不会在父Logger的appender里输出。！-->
+    <!--<logger name="org" level="INFO" additivity="false" ></logger>-->
+    <!--<logger name="org.springframework" level="INFO" additivity="false"></logger>-->
+    <!--<logger name="org.mybatis" level="INFO" additivity="false"></logger>-->
+    <Loggers>
+        <logger name="org.springframework.core" level="info"/>
+        <logger name="org.springframework.beans" level="info"/>
+        <logger name="org.springframework.context" level="info"/>
+        <logger name="org.springframework.web" level="info"/>
+        <logger name="cn.newstrength.*" level="info"/>
+        <Root level="INFO">
+            <AppenderRef ref="Console" />
+        </Root>
+    </Loggers>
+</Configuration>
