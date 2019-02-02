@@ -14,13 +14,21 @@
 
     <!-- Activate Cocoon Spring Configurator -->
     <context:annotation-config/>
+
     <bean id="properties" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-        <property name="location" value="classpath:conf/jdbc.properties"></property>
+        <property name="order" value="1"></property>
+        <property name="ignoreUnresolvablePlaceholders" value="true" />
+        <property name="locations">
+            <list>
+                <value>classpath:conf/jdbc.properties</value>
+                <value>classpath:conf/redis.properties</value>
+            </list>
+        </property>
     </bean>
     <!--引入数据库配置文件-->
     <import resource="classpath:conf/ctx-db-resource.xml"/>
     <!-- 引入mybatis文件 -->
-    <!--<import resource="classpath:conf/ctx-spring-mybatis.xml"/>-->
+    <import resource="classpath:conf/ctx-spring-mybatis.xml"/>
     <import resource="classpath:conf/ctx-db-redis.xml"/>
 
     <bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate" >
@@ -41,7 +49,7 @@
         <!--开启事务  -->
         <property name="enableTransactionSupport" value="true"></property>
     </bean >
-    <!-- <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+     <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
          <property name="dataSource" ref="dataSource"/>
      </bean>
      <tx:advice id="txAdvice" transaction-manager="transactionManager">
@@ -54,7 +62,7 @@
          </tx:attributes>
      </tx:advice>
      <aop:config>
-         <aop:pointcut id="txPointCut" expression="execution (* cn.newstrength.service.impl.*(..))"/>
+         <aop:pointcut id="txPointCut" expression="execution(* cn.newstrength.service.impl.*Impl.*(..))"/>
          <aop:advisor advice-ref="txAdvice" pointcut-ref="txPointCut"/>
-     </aop:config>-->
+     </aop:config>
 </beans>

@@ -1,1 +1,48 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.newstrength.dao.UserDao">
+    <resultMap id="resultMap" type="cn.newstrength.entity.UserObj">
+        <result property="userId" column="USER_ID" jdbcType="INTEGER" javaType="Integer"/>
+        <result property="userName" column="USER_NAME" jdbcType="CHAR" javaType="String"/>
+        <result property="passWord" column="PASSWORD" jdbcType="CHAR" javaType="String"/>
+        <result property="errLoginCount" column="ERR_LOGIN_COUNT" jdbcType="INTEGER" javaType="int"/>
+        <result property="lastEditPassWordTime" column="LAST_EDIT_PASSWORD_TIME" jdbcType="DATE" javaType="java.util.Date"/>
+        <result property="accountStatue" column="ACCOUNT_STATUE" jdbcType="CHAR" javaType="String"/>
+        <result property="creatorId" column="CREATOR_ID" jdbcType="INTEGER" javaType="Integer"/>
+        <result property="createTime" column="CREATE_TIME" jdbcType="DATE" javaType="java.util.Date"/>
+        <result property="modifierId" column="MODIFIER_ID" jdbcType="INTEGER" javaType="Integer"/>
+        <result property="modifierTime" column="MODIFIER_TIME" jdbcType="DATE" javaType="java.util.Date"/>
+        <result property="deleteId" column="DELETE_ID" jdbcType="INTEGER" javaType="Integer"/>
+        <result property="deleteTime" column="DELETE_TIME" jdbcType="DATE" javaType="java.util.Date"/>
+    </resultMap>
+    <sql id="columns">
+        sysUserObj.USER_ID,
+        sysUserObj.USER_NAME,
+        sysUserObj.PASSWORD,
+        sysUserObj.ERR_LOGIN_COUNT,
+        sysUserObj.LAST_EDIT_PASSWORD_TIME,
+        sysUserObj.ACCOUNT_STATUE,
+        sysUserObj.CREATOR_ID,
+        sysUserObj.CREATE_TIME,
+        sysUserObj.MODIFIER_ID,
+        sysUserObj.MODIFIER_TIME,
+        sysUserObj.DELETE_ID,
+        sysUserObj.DELETE_TIME
+    </sql>
+    <sql id="tableName">
+        T_SYS_USER
+    </sql>
+<!--    <select id="getOneById" resultMap="" parameterType="Object">
+        select <include refid="columns"/> from <include refid="tableName"/> sysUserObj where sysUserObj.user_id = #{userId}
+    </select>-->
+
+    <insert id="addOne" parameterType="Object">
+        insert into <include refid="tableName"/> set
+        USER_NAME = #{userName,jdbcType=CHAR},
+        PASSWORD = #{passWord,jdbcType=CHAR},
+        ERR_LOGIN_COUNT = #{errLoginCount,jdbcType=INTEGER},
+        ACCOUNT_STATUE = #{accountStatue,jdbcType=CHAR},
+        CREATE_TIME = now()
+    </insert>
+</mapper>

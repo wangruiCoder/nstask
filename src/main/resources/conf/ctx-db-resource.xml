@@ -1,40 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
-
-    <!--&lt;!&ndash; 数据源 &ndash;&gt;
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd">
+    <!-- 数据源 -->
     <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource"
           init-method="init" destroy-method="close">
-        &lt;!&ndash; 数据库基本信息配置 &ndash;&gt;
+        <!-- 数据库基本信息配置 -->
         <property name="url" value="${druid.url}" />
         <property name="username" value="${druid.username}" />
         <property name="password" value="${druid.password}" />
         <property name = "driverClassName" value = "${druid.driverClassName}" />
 
-        &lt;!&ndash; 初始化连接数量 &ndash;&gt;
+        <!-- 初始化连接数量 -->
         <property name="initialSize" value="${druid.initialSize}" />
-        &lt;!&ndash; 最小空闲连接数 &ndash;&gt;
+        <!-- 最小空闲连接数 -->
         <property name="minIdle" value="${druid.minIdle}" />
-        &lt;!&ndash; 最大并发连接数 &ndash;&gt;
+        <!-- 最大并发连接数 -->
         <property name="maxActive" value="${druid.maxActive}" />
-        &lt;!&ndash; 配置获取连接等待超时的时间 &ndash;&gt;
+        <!-- 配置获取连接等待超时的时间 -->
         <property name="maxWait" value="${druid.maxWait}" />
 
-        &lt;!&ndash; 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 &ndash;&gt;
+        <!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
         <property name="timeBetweenEvictionRunsMillis" value="${druid.timeBetweenEvictionRunsMillis}" />
 
-        &lt;!&ndash; 配置一个连接在池中最小生存的时间，单位是毫秒 &ndash;&gt;
+        <!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
         <property name="minEvictableIdleTimeMillis" value="${druid.minEvictableIdleTimeMillis}" />
         <property name="validationQuery" value="${druid.validationQuery}" />
         <property name="testWhileIdle" value="${druid.testWhileIdle}" />
         <property name="testOnBorrow" value="${druid.testOnBorrow}" />
         <property name="testOnReturn" value="${druid.testOnReturn}" />
 
-        &lt;!&ndash; 打开PSCache，并且指定每个连接上PSCache的大小 如果用Oracle，则把poolPreparedStatements配置为true，mysql可以配置为false。 &ndash;&gt;
+        <!-- 打开PSCache，并且指定每个连接上PSCache的大小 如果用Oracle，则把poolPreparedStatements配置为true，mysql可以配置为false。 -->
         <property name="poolPreparedStatements" value="${druid.poolPreparedStatements}" />
         <property name="maxPoolPreparedStatementPerConnectionSize" value="${druid.maxPoolPreparedStatementPerConnectionSize}" />
-        &lt;!&ndash; 配置监控统计拦截的filters &ndash;&gt;
+        <!-- 配置监控统计拦截的filters -->
         <property name="filters" value="${druid.filters}" />
-    </bean>-->
+    </bean>
 </beans>

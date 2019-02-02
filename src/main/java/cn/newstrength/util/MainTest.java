@@ -2,14 +2,12 @@ package cn.newstrength.util;
 
 import cn.newstrength.entity.UserObj;
 
-public class MainTest {
-    public static void main(String[] args){
-        UserObj userObj = new UserObj();
-        userObj.setUserId(1);
-        userObj.setCreatorId(1);
-        userObj.setPassWord("cyjj");
-        userObj.setUserName("wangrui");
+import java.security.NoSuchAlgorithmException;
 
-        System.out.println(userObj.toString());
+public class MainTest {
+    public static void main(String[] args) throws NoSuchAlgorithmException {
+
+        String a = PasswordPBKDF2.generateSalt();
+        System.out.println(a);
     }
 }

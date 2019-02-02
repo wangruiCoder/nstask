@@ -21,31 +21,31 @@ public class BaseServiceImpl<T> implements BaseService<T> {
 
     @Override
     public int add(T t) {
-        return baseDao.add(t);
+        return baseDao.addOne(t);
     }
 
     @Override
     public T getOneById(int id) {
-        return baseDao.getOneById(id);
+        return null;
     }
 
     @Override
     public int putByObject(T t) {
-        return baseDao.putByObject(t);
+        return 1;
     }
 
     @Override
     public int delOneById(int id) {
-        return baseDao.delOneById(id);
+        return 1;
     }
 
     @Override
     public List<T> getList(T t) {
-        return baseDao.getList(t);
+        return null;
     }
 
     @Override
     public List<T> getAll(T t) {
-        return baseDao.getAll(t);
+        return null;
     }
 }

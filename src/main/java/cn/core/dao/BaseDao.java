@@ -10,9 +10,9 @@ import java.util.List;
  */
 public interface BaseDao<T> {
 
-    int add(T t);
+    int addOne(T t);
 
-    T getOneById(int id);
+/*    T getOneById(int id);
 
     int putByObject(T t);
 
@@ -20,5 +20,5 @@ public interface BaseDao<T> {
 
     List<T> getList(T t);
 
-    List<T> getAll(T t);
+    List<T> getAll(T t);*/
 }
