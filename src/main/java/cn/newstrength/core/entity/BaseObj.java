@@ -1,4 +1,4 @@
-package cn.core.entity;
+package cn.newstrength.core.entity;
 
 import java.io.Serializable;
 import java.util.Date;

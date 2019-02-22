@@ -1,4 +1,4 @@
-package cn.newstrength.util;
+package cn.newstrength.common.util;
 
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;

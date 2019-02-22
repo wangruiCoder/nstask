@@ -1,7 +1,7 @@
-package cn.newstrength.dao;
+package cn.newstrength.user.dao;
 
-import cn.core.dao.BaseDao;
-import cn.newstrength.entity.UserObj;
+import cn.newstrength.core.dao.BaseDao;
+import cn.newstrength.user.entity.UserObj;
 
 /**
  * 用户Dao

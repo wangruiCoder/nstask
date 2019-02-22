@@ -1,6 +1,6 @@
-package cn.newstrength.entity;
+package cn.newstrength.user.entity;
 
-import cn.core.entity.BaseObj;
+import cn.newstrength.core.entity.BaseObj;
 
 import java.util.Date;
 

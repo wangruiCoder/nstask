@@ -1,6 +1,5 @@
-package cn.newstrength.util;
+package cn.newstrength.common.util;
 
-import cn.newstrength.entity.UserObj;
 
 import java.security.NoSuchAlgorithmException;
 
