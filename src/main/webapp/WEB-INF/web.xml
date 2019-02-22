@@ -31,7 +31,7 @@
 
   <context-param>
     <param-name>contextConfigLocation</param-name>
-    <param-value>classpath*:conf/applicationContext.xml</param-value>
+    <param-value>classpath:conf/applicationContext.xml</param-value>
   </context-param>
 
   <!-- SpringMvc核心配置 -->
@@ -46,6 +46,7 @@
   </servlet>
   <servlet-mapping>
     <servlet-name>dispatcher</servlet-name>
-    <url-pattern>/*</url-pattern>
+    <!-- 设置规则时为/，防止访问自定义的页面时访问不到 -->
+    <url-pattern>/</url-pattern>
   </servlet-mapping>
 </web-app>

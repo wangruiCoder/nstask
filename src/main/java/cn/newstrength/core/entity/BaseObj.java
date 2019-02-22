@@ -1,11 +1,11 @@
-package cn.core.entity;
+package cn.newstrength.core.entity;
 
 import java.io.Serializable;
 import java.util.Date;
 
 public class BaseObj implements Serializable {
     private Integer creatorId;
-    private Date creatorTime;
+    private Date createTime;
     private Integer modifierId;
     private Date modifierTime;
     private Integer deleteId;
@@ -19,12 +19,12 @@ public class BaseObj implements Serializable {
         this.creatorId = creatorId;
     }
 
-    public Date getCreatorTime() {
-        return creatorTime;
+    public Date getCreateTime() {
+        return createTime;
     }
 
-    public void setCreatorTime(Date creatorTime) {
-        this.creatorTime = creatorTime;
+    public void setCreateTime(Date creatorTime) {
+        this.createTime = createTime;
     }
 
     public int getModifierId() {
@@ -62,7 +62,7 @@ public class BaseObj implements Serializable {
     protected StringBuffer getBaseString(){
         final StringBuffer sb = new StringBuffer(",");
         sb.append("creatorId=").append(creatorId);
-        sb.append(", creatorTime=").append(creatorTime);
+        sb.append(", creatorTime=").append(createTime);
         sb.append(", modifierId=").append(modifierId);
         sb.append(", modifierTime=").append(modifierTime);
         sb.append(", deleteId=").append(deleteId);

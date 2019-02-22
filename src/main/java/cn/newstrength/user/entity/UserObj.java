@@ -1,6 +1,6 @@
-package cn.newstrength.entity;
+package cn.newstrength.user.entity;
 
-import cn.core.entity.BaseObj;
+import cn.newstrength.core.entity.BaseObj;
 
 import java.util.Date;
 
@@ -10,7 +10,8 @@ public class UserObj extends BaseObj {
     private String passWord;
     private int errLoginCount;
     private Date lastEditPassWordTime;
-    private Integer accountStatue;
+    private String accountStatue;
+    private String salt;
 
 
     public int getUserId() {
@@ -53,11 +54,11 @@ public class UserObj extends BaseObj {
         this.lastEditPassWordTime = lastEditPassWordTime;
     }
 
-    public int getAccountStatue() {
+    public String getAccountStatue() {
         return accountStatue;
     }
 
-    public void setAccountStatue(Integer accountStatue) {
+    public void setAccountStatue(String accountStatue) {
         this.accountStatue = accountStatue;
     }
 
@@ -73,5 +74,13 @@ public class UserObj extends BaseObj {
         sb.append(super.getBaseString());
         sb.append('}');
         return sb.toString();
+    }
+
+    public String getSalt() {
+        return salt;
+    }
+
+    public void setSalt(String salt) {
+        this.salt = salt;
     }
 }

@@ -17,6 +17,12 @@
         <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
     </context:component-scan>
 
+    <!--配置访问页面资源-->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/page/*"/>
+        <property name="suffix" value=".jsp"/>
+    </bean>
+
     <mvc:interceptors>
         <mvc:interceptor>
             <mvc:mapping path="/*"/>
