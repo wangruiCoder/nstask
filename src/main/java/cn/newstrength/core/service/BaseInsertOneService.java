@@ -1,5 +1,5 @@
 package cn.newstrength.core.service;
 
-public interface BaseInsertOneObjectService<T> {
+public interface BaseInsertOneService<T> {
     int insertOne(T t);
 }

@@ -1,5 +1,5 @@
 package cn.newstrength.core.service;
 
-public interface BaseQuaryOneObjectService<T> {
+public interface BaseQuaryOneService<T> {
     T quaryOneById(int quaryId);
 }
