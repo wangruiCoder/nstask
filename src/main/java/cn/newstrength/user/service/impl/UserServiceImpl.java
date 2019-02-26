@@ -29,6 +29,7 @@ public class UserServiceImpl extends AbstractLog4j2Service<UserServiceImpl>
 
     @Override
     public int insertOne(UserBO userObj) throws BusinessException {
+        logger.info("用户注册开始");
         int result ;
         Map<String,String> quaryCondition= new HashMap<String,String>();
         quaryCondition.put("userName",userObj.getUserName());
@@ -55,6 +56,7 @@ public class UserServiceImpl extends AbstractLog4j2Service<UserServiceImpl>
             throw new BusinessException("9999","注册用户失败，请联系管理员!");
         }
 
+        logger.info("用户注册结束");
         return result;
     }
 

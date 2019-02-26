@@ -20,7 +20,7 @@ public class RegistUserAction extends AbstractLog4j2Service<RegistUserAction> {
 
     @RequestMapping(value = "/regist",method = RequestMethod.POST)
     @ResponseBody
-    public int registUser(UserBO userObj){
+    public int registUser(UserBO userObj) throws RuntimeException {
         return insertOneObjectService.insertOne(userObj);
     }
 }

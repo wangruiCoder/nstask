@@ -22,6 +22,7 @@
         <property name="prefix" value="/page/*"/>
         <property name="suffix" value=".jsp"/>
     </bean>
+    <bean id="exceptionHandler" class="cn.newstrength.core.exception.resolver.BusinessExceptionResolver" />
 
     <mvc:interceptors>
         <mvc:interceptor>
