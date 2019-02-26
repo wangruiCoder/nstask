@@ -40,9 +40,14 @@
     <insert id="insertOne" parameterType="Object">
         insert into <include refid="tableName"/> set
         USER_NAME = #{userName,jdbcType=CHAR},
-        PASSWORD = #{passWord,jdbcType=CHAR},
+        PASSWORD = #{passWord,jdbcType=VARCHAR},
         ERR_LOGIN_COUNT = #{errLoginCount,jdbcType=INTEGER},
         ACCOUNT_STATUE = #{accountStatue,jdbcType=CHAR},
-        CREATE_TIME = now()
+        CREATE_TIME = now(),
+        SALT = #{salt}
     </insert>
+
+    <select id="queryByUserName" parameterType="Object" resultMap="resultMap">
+        select <include refid="columns" /> from <include refid="tableName"/> sysUserObj where sysUserObj.USER_NAME = #{userName}
+    </select>
 </mapper>

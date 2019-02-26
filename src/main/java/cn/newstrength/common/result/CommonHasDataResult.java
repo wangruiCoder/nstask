@@ -1,6 +1,7 @@
 package cn.newstrength.common.result;
 
 import cn.newstrength.core.result.Result;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 /**
  * 统一结果处理类
@@ -45,4 +46,5 @@ public class CommonHasDataResult extends Result {
     public void setData(Object data) {
         this.data = data;
     }
+
 }

@@ -6,9 +6,8 @@ package cn.newstrength.core.result;
  *
  */
 public class Result {
-
-    protected String errorCode;
-    protected String message;
+    private String errorCode;
+    private String message;
 
 
     public Result(){}

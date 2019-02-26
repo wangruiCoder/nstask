@@ -11,7 +11,7 @@ public class BaseBO implements Serializable {
     private Integer deleteId;
     private Date deleteTime;
 
-    public int getCreatorId() {
+    public Integer getCreatorId() {
         return creatorId;
     }
 
@@ -23,11 +23,11 @@ public class BaseBO implements Serializable {
         return createTime;
     }
 
-    public void setCreateTime(Date creatorTime) {
+    public void setCreateTime(Date createTime) {
         this.createTime = createTime;
     }
 
-    public int getModifierId() {
+    public Integer getModifierId() {
         return modifierId;
     }
 
@@ -43,7 +43,7 @@ public class BaseBO implements Serializable {
         this.modifierTime = modifierTime;
     }
 
-    public int getDeleteId() {
+    public Integer getDeleteId() {
         return deleteId;
     }
 

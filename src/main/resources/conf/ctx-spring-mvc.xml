@@ -42,7 +42,17 @@
                             </bean>
                         </property>
                         <property name="timeZone" value="GMT+8"/>
+                        <!-- 设置统一的实体类对象映射成json时序列化导致的 null 值-->
+                        <property name="serializationInclusion">
+                            <value type="com.fasterxml.jackson.annotation.JsonInclude.Include">NON_EMPTY</value>
+                        </property>
                     </bean>
+                </property>
+                <!-- 防止ie请求时返回值被当做附件下载 -->
+                <property name="supportedMediaTypes">
+                    <list>
+                        <value>text/html;charset=UTF-8</value>
+                    </list>
                 </property>
             </bean>
         </mvc:message-converters>

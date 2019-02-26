@@ -1,6 +1,7 @@
 package cn.newstrength.user.entity;
 
 import cn.newstrength.core.entity.BaseBO;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.util.Date;
 
@@ -13,8 +14,7 @@ public class UserBO extends BaseBO {
     private String accountStatue;
     private String salt;
 
-
-    public int getUserId() {
+    public Integer getUserId() {
         return userId;
     }
 
