@@ -12,7 +12,7 @@
 </head>
 <body>
     <div>
-        <form action="/task/user/addOne" method="post">
+        <form action="/task/user/regist" method="post">
             用户名：<input type="text" name="userName" id="userName"/><br/>
             密  码：<input type="text" name="passWord" id="passWord"/><br/>
             <input type="submit" value="submit"/>

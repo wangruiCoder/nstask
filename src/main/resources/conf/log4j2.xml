@@ -25,6 +25,9 @@
         <logger name="org.springframework.context" level="info"/>
         <logger name="org.springframework.web" level="info"/>
         <logger name="cn.newstrength.*" level="info"/>
+        <logger name="org.mybatisExamples.simple" level="debug" additivity="false">
+            <AppenderRef ref="Console"/>
+        </logger>
         <Root level="INFO">
             <AppenderRef ref="Console" />
         </Root>

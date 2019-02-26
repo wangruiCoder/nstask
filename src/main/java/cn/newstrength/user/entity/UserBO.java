@@ -1,10 +1,11 @@
 package cn.newstrength.user.entity;
 
-import cn.newstrength.core.entity.BaseObj;
+import cn.newstrength.core.entity.BaseBO;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.util.Date;
 
-public class UserObj extends BaseObj {
+public class UserBO extends BaseBO {
     private Integer userId;
     private String userName;
     private String passWord;
@@ -13,8 +14,7 @@ public class UserObj extends BaseObj {
     private String accountStatue;
     private String salt;
 
-
-    public int getUserId() {
+    public Integer getUserId() {
         return userId;
     }
 
@@ -64,7 +64,7 @@ public class UserObj extends BaseObj {
 
     @Override
     public String toString() {
-        final StringBuffer sb = new StringBuffer("UserObj{");
+        final StringBuffer sb = new StringBuffer("UserBO{");
         sb.append("userId=").append(userId);
         sb.append(", userName='").append(userName).append('\'');
         sb.append(", passWord='").append(passWord).append('\'');

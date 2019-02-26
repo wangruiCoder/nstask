@@ -1,5 +1,5 @@
 package cn.newstrength.core.service;
 
-public interface BaseDeleteOneObjectService {
+public interface BaseDeleteOneService {
     int deleteOneById(int deleteId);
 }
