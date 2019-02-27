@@ -3,7 +3,7 @@ package cn.newstrength.core.entity;
 import java.io.Serializable;
 import java.util.Date;
 
-public class BaseBO implements Serializable {
+public abstract class BaseBO implements Serializable {
     private Integer creatorId;
     private Date createTime;
     private Integer modifierId;

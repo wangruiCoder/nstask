@@ -1,7 +1,6 @@
 package cn.newstrength.user.entity;
 
 import cn.newstrength.core.entity.BaseBO;
-import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.util.Date;
 

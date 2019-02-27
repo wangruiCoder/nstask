@@ -11,7 +11,6 @@ import cn.newstrength.user.entity.UserBO;
 import cn.newstrength.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.util.HashMap;
@@ -20,9 +19,9 @@ import java.util.Map;
 
 @Service(value = "userService")
 public class UserServiceImpl extends AbstractLog4j2Service<UserServiceImpl>
-        implements UserService
-        , BaseInsertOneService<UserBO>
-        , BaseUpdateOneService<UserBO> {
+        implements UserService,
+        BaseInsertOneService<UserBO>,
+        BaseUpdateOneService<UserBO> {
 
     @Autowired
     private UserDao userMapper;
@@ -63,5 +62,13 @@ public class UserServiceImpl extends AbstractLog4j2Service<UserServiceImpl>
     @Override
     public int updateOne(UserBO userObj) {
         return userMapper.updateOneByObject(userObj);
+    }
+
+    @Override
+    public UserBO queryByUserName(UserBO userBo) {
+        Map<String,String> quaryCondition= new HashMap<String,String>();
+        quaryCondition.put("userName",userBo.getUserName());
+        UserBO queryUserBo = userMapper.queryByUserName(quaryCondition);
+        return null;
     }
 }
