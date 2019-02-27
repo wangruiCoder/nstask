@@ -24,10 +24,10 @@
         <logger name="org.springframework.beans" level="info"/>
         <logger name="org.springframework.context" level="info"/>
         <logger name="org.springframework.web" level="info"/>
-        <logger name="cn.newstrength.*" level="info"/>
-        <logger name="org.mybatisExamples.simple" level="debug" additivity="false">
-            <AppenderRef ref="Console"/>
-        </logger>
+        <logger name="cn.newstrength.*" level="debug"/>
+        <logger name="org.mybatis" level="debug"/>
+        <logger name="druid.sql.Statement" level="debug"/>
+        <logger name="druid.sql.ResultSet" level="debug"/>
         <Root level="INFO">
             <AppenderRef ref="Console" />
         </Root>
