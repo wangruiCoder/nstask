@@ -1,6 +1,6 @@
 package cn.newstrength.user.service.impl;
 
-import cn.newstrength.common.util.PasswordPBKDF2;
+import cn.newstrength.core.encryption.password.PasswordPBKDF2;
 import cn.newstrength.core.constant.SystemBusinessExceptionCodeEnum;
 import cn.newstrength.core.exception.BusinessException;
 import cn.newstrength.core.service.AbstractLog4j2Service;

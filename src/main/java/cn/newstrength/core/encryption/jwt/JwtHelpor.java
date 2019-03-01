@@ -1,4 +1,4 @@
-package cn.newstrength.common.util;
+package cn.newstrength.core.encryption.jwt;
 
 import io.jsonwebtoken.*;
 
@@ -10,15 +10,16 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Jwt 工具类
+ * Jwt 工具类,支持生成token,验证token。
+ * 当前类线程安全。
  * @author 王瑞
  */
 public class JwtHelpor {
 
+    // 签名,建议使用数字字母组合。
     private static final String SECRET = "dddd";
-    private static final int calendarField = Calendar.MINUTE;
-    private static final int calendarInterval = 30;
 
+    // 数据加密算法
     private SignatureAlgorithm signatureAlgorithm;
 
     private JwtHelpor(){}
@@ -27,13 +28,28 @@ public class JwtHelpor {
         private static final JwtHelpor INSTANCE = new JwtHelpor();
     }
 
+    /**
+     * 获取JwtHelpor实例
+     * @return JwtHelpor实例
+     */
     public static JwtHelpor getInstance(){
         return JwtHelporInstance.INSTANCE;
     }
 
     /**
      * 生成token
-     * @param payload 存入token的信息模块，信息按照json格式传入
+     * @param payload 存入token的信息模块，信息按照json格式传入<br/>
+     * payload 标准字段有
+     * <ul>
+     *   <li>iss:Issuer，jwt签发者</li>
+     *   <li>sub:Subject，jwt所面向的用户</li>
+     *   <li>aud:Audience，接收jwt的一方</li>
+     *   <li>exp:ExpirationTime，过期时间</li>
+     *   <li>iat:Issued at，发行时间</li>
+     *   <li>nbf:定义在什么时间之前，该jwt都是不可用的.</li>
+     *   <li>jti:唯一身份标识，主要用来作为一次性token,从而回避重放攻击</li>
+     * </ul>
+     * 除以上标准字段外还可以自己设置其他字段
      * @return token字符串
      */
     public String createToken(String payload, SignatureAlgorithm signatureAlgorithm){
@@ -46,13 +62,31 @@ public class JwtHelpor {
         return token;
     }
 
-    public String createToken(Map<String, Object> claimMaps, SignatureAlgorithm signatureAlgorithm, Date issuedAt){
+    /**
+     * 通过设置claimMaps生成token,claimMaps中切勿存放敏感信息和过量信息,防止生成的token超过4KB,超过cookie可以支持的最大长度。
+     * @param claimMaps 需要放入token中的信息
+     * @param signatureAlgorithm 采用的数据加密算法，此算法设置完毕后会应用到签名key和token的生成
+     * @param issuedAt token的起始时间，请使用系统当前时间
+     * @param calendarFieldEnum 生成token时可支持的时间单位:分钟,小时,天
+     * @param calendarInterval token有效时间
+     * @return token字符串
+     * @throws RuntimeException
+     * @throws IllegalArgumentException calendarInterval 参数设置错误,参数可设置范围请参考 {@link cn.newstrength.core.encryption.jwt.CalendarFieldEnum}
+     */
+    public String createToken(Map<String,Object> claimMaps, SignatureAlgorithm signatureAlgorithm,
+                              Date issuedAt, CalendarFieldEnum calendarFieldEnum, int calendarInterval) throws RuntimeException{
+
+        if(calendarInterval < calendarFieldEnum.getMinValue()
+                || calendarInterval > calendarFieldEnum.getMaxValue()){
+            throw new IllegalArgumentException("过期时间设置异常，请输入介于"+calendarFieldEnum.getMinValue()+"~"+calendarFieldEnum.getMaxValue()+"正整数");
+        }
+
         initSignatureAlgorithm(signatureAlgorithm);
 
         String token = Jwts.builder().setHeader(this.getHeader())
                 .setClaims(claimMaps)
                 .setIssuedAt(issuedAt)
-                .setExpiration(this.getExpiresAtTime())
+                .setExpiration(this.getExpiresAtTime(issuedAt,calendarFieldEnum,calendarInterval))
                 .signWith(this.signatureAlgorithm, this.getKey()).compact();
 
         return token;
@@ -64,7 +98,7 @@ public class JwtHelpor {
         Jws<Claims> claimsJws = Jwts.parser().setSigningKey(getKey()).parseClaimsJws(token);
         JwsHeader header = claimsJws.getHeader();
         Claims body = claimsJws.getBody();
-        System.out.println(body.get("typ"));
+        System.out.println(body.get("exp"));
         return true;
     }
 
@@ -87,12 +121,13 @@ public class JwtHelpor {
     }
 
     /**
-     * 获取到期时间
+     * 获取token的到期时间
      * @return 返回计算完成的到期时间
      */
-    private Date getExpiresAtTime(){
+    private Date getExpiresAtTime(Date startTime, CalendarFieldEnum calendarFieldEnum,int calendarInterval){
         Calendar nowTime = Calendar.getInstance();
-        nowTime.add(calendarField, calendarInterval);
+        nowTime.setTime(startTime);
+        nowTime.add(calendarFieldEnum.getCalendarField(), calendarInterval);
         Date expiresAtTime = nowTime.getTime();
 
         return expiresAtTime;
