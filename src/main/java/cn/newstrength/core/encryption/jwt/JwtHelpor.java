@@ -1,9 +1,13 @@
 package cn.newstrength.core.encryption.jwt;
 
+import cn.newstrength.core.service.AbstractLog4j2Service;
 import io.jsonwebtoken.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.crypto.spec.SecretKeySpec;
 import java.security.Key;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -14,7 +18,9 @@ import java.util.Map;
  * 当前类线程安全。
  * @author 王瑞
  */
-public class JwtHelpor {
+public class JwtHelpor extends AbstractLog4j2Service<JwtHelpor> {
+
+    private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     // 签名,建议使用数字字母组合。
     private static final String SECRET = "dddd";
@@ -112,6 +118,7 @@ public class JwtHelpor {
 
         if(currentTime > expTime){
             expired = true;
+            logger.info("token expired,expTime:"+this.simpleDateFormat.format(expTime)+" ,currentTime:"+this.simpleDateFormat.format(currentTime));
         }
 
         return expired;
