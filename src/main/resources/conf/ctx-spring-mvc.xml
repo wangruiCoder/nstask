@@ -22,9 +22,14 @@
         <property name="prefix" value="/page/*"/>
         <property name="suffix" value=".jsp"/>
     </bean>
-    <bean id="handlerExceptionResolver" class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
-
-    </bean>
+<!--    <bean id="handlerExceptionResolver" class="cn.newstrength.core.exception.resolver.CustomExceptionResolver">
+        <property name="exceptionMappings">
+            <props>
+                <prop key="java.lang.exception">error/500</prop>
+                <prop key="javax.servlet.ServletException">error/500</prop>
+            </props>
+        </property>
+    </bean>-->
     <!-- 统一异常 -->
     <bean id="exceptionHandler" class="cn.newstrength.core.exception.resolver.BusinessExceptionResolver" />
 

@@ -23,7 +23,7 @@ public class LoginAction extends AbstractLog4j2Service<LoginAction> {
             throw new BusinessException(SystemBusinessExceptionCodeEnum.ERROR_CODE.getBusinessCode(),"用户名或密码错误");
         } else if (passWord == null || "".equals(userName)) {
             throw new BusinessException(SystemBusinessExceptionCodeEnum.ERROR_CODE.getBusinessCode(),"用户名或密码错误");
-        } else if (code == null || "".equals(code)) {
+        } else if (code == null || "null".equals(code)) {
             throw new BusinessException(SystemBusinessExceptionCodeEnum.ERROR_CODE.getBusinessCode(),"验证码缺失");
         }
 
