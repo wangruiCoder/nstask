@@ -35,7 +35,7 @@ public class ReturnResultResponseBodyAdvice
 
         if (body == null
                 || (body instanceof File)
-                || (body instanceof Result || body instanceof String)) {
+                || (body instanceof Result)) {
             return body;
         } else {
             CommonHasDataResult result = new CommonHasDataResult();

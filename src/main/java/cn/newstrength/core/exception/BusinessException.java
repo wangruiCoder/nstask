@@ -1,6 +1,8 @@
 package cn.newstrength.core.exception;
 
 import cn.newstrength.core.constant.SystemBusinessExceptionCodeEnum;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 /**
  * 自定义的系统业务异常类，用于程序正常运行时在业务阶段产生的错误的异常处理

@@ -1,5 +1,7 @@
 package cn.newstrength.user.service.impl;
 
+import cn.newstrength.core.encryption.jwt.CalendarFieldEnum;
+import cn.newstrength.core.encryption.jwt.JwtHelpor;
 import cn.newstrength.core.encryption.password.PasswordPBKDF2;
 import cn.newstrength.core.constant.SystemBusinessExceptionCodeEnum;
 import cn.newstrength.core.exception.BusinessException;
@@ -9,10 +11,13 @@ import cn.newstrength.core.service.BaseUpdateOneService;
 import cn.newstrength.user.dao.UserDao;
 import cn.newstrength.user.entity.UserBO;
 import cn.newstrength.user.service.UserService;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -65,10 +70,29 @@ public class UserServiceImpl extends AbstractLog4j2Service<UserServiceImpl>
     }
 
     @Override
-    public UserBO queryByUserName(UserBO userBo) {
+    public String queryByUserName(String userName, String passWord, String code) throws BusinessException {
         Map<String,String> quaryCondition= new HashMap<String,String>();
-        quaryCondition.put("userName",userBo.getUserName());
+        quaryCondition.put("userName",userName);
         UserBO queryUserBo = userMapper.queryByUserName(quaryCondition);
-        return null;
+        String token = "";
+
+        try {
+            String passWordPBKDF2 = PasswordPBKDF2.getEncryptedPassword(passWord,queryUserBo.getSalt());
+            if (passWordPBKDF2.equals(queryUserBo.getPassWord())) {
+                Map<String,Object> claim = new HashMap<String, Object>();
+                claim.put("userId",queryUserBo.getUserId());
+                claim.put("userName",queryUserBo.getUserName());
+                token = JwtHelpor.getInstance().createToken(claim,SignatureAlgorithm.HS256,new Date(),CalendarFieldEnum.DEFAULT,30);
+            }
+        } catch (NoSuchAlgorithmException e) {
+            logger.error("密码加密错误");
+            throw new BusinessException(SystemBusinessExceptionCodeEnum.ERROR_CODE);
+        } catch (InvalidKeySpecException e) {
+            logger.error("密码加密错误");
+            throw new BusinessException(SystemBusinessExceptionCodeEnum.ERROR_CODE);
+        }
+
+        logger.info(token);
+        return token;
     }
 }
