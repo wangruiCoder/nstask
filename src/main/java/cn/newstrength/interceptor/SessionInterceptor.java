@@ -25,7 +25,7 @@ public class SessionInterceptor implements HandlerInterceptor {
             response.setContentType("text/html;charset=UTF-8");
             out.write("no login1222");
             out.close();
-            return false;
+            return true;
         }else{
             return true;
         }
@@ -38,6 +38,6 @@ public class SessionInterceptor implements HandlerInterceptor {
 
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
-
+        System.out.println("ex = " + ex.getMessage()+"88888888888888888");
     }
 }

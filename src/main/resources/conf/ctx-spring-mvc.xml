@@ -13,7 +13,7 @@
         http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd">
 
     <context:annotation-config/>
-    <context:component-scan base-package="cn.newstrength.*">
+    <context:component-scan base-package="cn.newstrength.*" use-default-filters="false">
         <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
     </context:component-scan>
 
@@ -22,24 +22,13 @@
         <property name="prefix" value="/page/*"/>
         <property name="suffix" value=".jsp"/>
     </bean>
-<!--    <bean id="handlerExceptionResolver" class="cn.newstrength.core.exception.resolver.CustomExceptionResolver">
-        <property name="exceptionMappings">
-            <props>
-                <prop key="java.lang.exception">error/500</prop>
-                <prop key="javax.servlet.ServletException">error/500</prop>
-            </props>
-        </property>
-    </bean>-->
     <!-- 统一异常 -->
     <bean id="exceptionHandler" class="cn.newstrength.core.exception.resolver.BusinessExceptionResolver" />
 
-    <mvc:interceptors>
-        <mvc:interceptor>
-            <mvc:mapping path="/*"/>
-            <mvc:exclude-mapping path="/login"/>
-            <bean class="cn.newstrength.interceptor.SessionInterceptor"/>
-        </mvc:interceptor>
-    </mvc:interceptors>
+    <bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+        <property name="defaultErrorView" value="/error"/>
+        <property name="exceptionAttribute" value="ex"></property>
+    </bean>
     <mvc:annotation-driven>
     <!-- 设置springMVC返回统一的时间格式，指定格式的时间不受影响，同时设置统一的GMT+8，解决夏令时差8个小时的问题 -->
         <mvc:message-converters>
@@ -68,4 +57,11 @@
         </mvc:message-converters>
     </mvc:annotation-driven>
 
+<!--    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/**"/>
+            &lt;!&ndash;<mvc:exclude-mapping path="/login"/>&ndash;&gt;
+            <bean class="cn.newstrength.interceptor.SessionInterceptor"/>
+        </mvc:interceptor>
+    </mvc:interceptors>-->
 </beans>
