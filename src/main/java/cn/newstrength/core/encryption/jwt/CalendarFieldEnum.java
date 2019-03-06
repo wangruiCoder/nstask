@@ -9,19 +9,19 @@ import java.util.Calendar;
  */
 public enum CalendarFieldEnum {
     /**
-     * 默认分钟单位 1<= calendarInterval <=1440
+     * 默认分钟单位calendarInterval 介于1到1440
      */
     DEFAULT(Calendar.MINUTE,1,1440),
     /**
-     * 分钟单位 1<= calendarInterval <=1440
+     * 分钟单位calendarInterval 介于1到1440
      */
     MINUTE(Calendar.MINUTE,1,1440),
     /**
-     * 小时单位 1<= calendarInterval <=48
+     * 小时单位calendarInterval 介于1到48
      */
     HOUR(Calendar.HOUR,1,48),
     /**
-     * 天单位 1<= calendarInterval <=30
+     * 天单位calendarInterval 介于1到30
      */
     DATE(Calendar.DATE,1,30);
 

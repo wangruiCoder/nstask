@@ -14,8 +14,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Jwt 工具类,支持生成token,验证token。
- * 当前类线程安全。
+ * <p>Jwt 工具类,支持生成token,验证token,获取token body。
+ * 本Jwt token生成是基于JJWT,更加详细的JJWT文档请参考官方api</p>
+ * <p>当前工具类线程安全</p>
  * @author 王瑞
  */
 public class JwtHelpor extends AbstractLog4j2Service<JwtHelpor> {
@@ -43,8 +44,8 @@ public class JwtHelpor extends AbstractLog4j2Service<JwtHelpor> {
     }
 
     /**
-     * 通过设置 payload 生成token,具体的payload信息请参考payload标准
-     * @param payload 存入token的信息模块，信息按照json格式传入<br/>
+     * 通过设置 payload 生成token,具体的payload信息请参考payload标准。
+     * @param payload 存入token的信息模块，信息按照json格式传入
      * payload 标准字段有
      * <ul>
      *   <li>iss:Issuer，jwt签发者</li>
@@ -72,7 +73,7 @@ public class JwtHelpor extends AbstractLog4j2Service<JwtHelpor> {
      * 通过设置claimMaps生成token,claimMaps中切勿存放敏感信息和过量信息,防止生成的token超过4KB,超过cookie可以支持的最大长度。
      * @param claimMaps 需要放入token中的信息
      * @param signatureAlgorithm 采用的数据加密算法，此算法设置完毕后会应用到签名key和token的生成，
-     *                           如果这个值为<i>SignatureAlgorithm.NONE<i/>，系统会自动设定其为<i>SignatureAlgorithm.HS256<i/><br/>
+     *                           如果这个值为<i>SignatureAlgorithm.NONE</i>，系统会自动设定其为<i>SignatureAlgorithm.HS256</i>
      * @param issuedAt token的起始时间，请使用系统当前时间
      * @param calendarFieldEnum 生成token时可支持的时间单位:分钟,小时,天
      * @param calendarInterval token有效时间
@@ -104,7 +105,7 @@ public class JwtHelpor extends AbstractLog4j2Service<JwtHelpor> {
      * 验证token是否已经过期
      * @param token token
      * @param signatureAlgorithm token加密算法
-     * @return 过期结果,true 过期,false 未过期
+     * @return 过期结果: true 过期,false 未过期
      */
     public boolean verifyTokenExpired(String token, SignatureAlgorithm signatureAlgorithm){
         boolean expired = false;
@@ -126,7 +127,7 @@ public class JwtHelpor extends AbstractLog4j2Service<JwtHelpor> {
 
     /**
      * 获取token的主体
-     * @param token token
+     * @param token token字符串
      * @param signatureAlgorithm token加密算法
      * @return token主体
      */
@@ -175,7 +176,7 @@ public class JwtHelpor extends AbstractLog4j2Service<JwtHelpor> {
     }
 
     /**
-     * 获取 signatureAlgorithm 数据签名算法，主要检测是否为 <i>SignatureAlgorithm.NONE<i/>，如果为 <i>SignatureAlgorithm.NONE<i/>，默认使用 <i>SignatureAlgorithm.HS256<i/>
+     * 获取 signatureAlgorithm 数据签名算法，主要检测是否为 <i>SignatureAlgorithm.NONE</i>，如果为 <i>SignatureAlgorithm.NONE</i>，默认使用 <i>SignatureAlgorithm.HS256<i/>
      */
     private void initSignatureAlgorithm(SignatureAlgorithm signatureAlgorithm){
         if(signatureAlgorithm == SignatureAlgorithm.NONE){

@@ -1,26 +1,29 @@
 package cn.newstrength.user.service.impl;
 
+import cn.newstrength.core.constant.SystemBusinessExceptionCodeEnum;
 import cn.newstrength.core.encryption.jwt.CalendarFieldEnum;
 import cn.newstrength.core.encryption.jwt.JwtHelpor;
 import cn.newstrength.core.encryption.password.PasswordPBKDF2;
-import cn.newstrength.core.constant.SystemBusinessExceptionCodeEnum;
 import cn.newstrength.core.exception.BusinessException;
 import cn.newstrength.core.service.AbstractLog4j2Service;
 import cn.newstrength.core.service.BaseInsertOneService;
 import cn.newstrength.core.service.BaseUpdateOneService;
+import cn.newstrength.user.constant.UserMoudleRedisKeyEnum;
 import cn.newstrength.user.dao.UserDao;
 import cn.newstrength.user.entity.UserBO;
 import cn.newstrength.user.service.UserService;
-import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
+
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 
 @Service(value = "userService")
@@ -30,8 +33,14 @@ public class UserServiceImpl extends AbstractLog4j2Service<UserServiceImpl>
         BaseInsertOneService<UserBO>,
         BaseUpdateOneService<UserBO> {
 
+    //错误登录次数限时范围
+    private static final Long LIMIT_TIME = 30L;
+    private static final int ERROR_LOGIN_COUNT = 5;
+
     @Autowired
     private UserDao userMapper;
+    @Autowired
+    private RedisTemplate redisTemplate;
 
     @Override
     public int insertOne(UserBO userObj) throws BusinessException {
@@ -79,13 +88,31 @@ public class UserServiceImpl extends AbstractLog4j2Service<UserServiceImpl>
         String token = "";
 
         try {
-            String passWordPBKDF2 = PasswordPBKDF2.getEncryptedPassword(passWord,queryUserBo.getSalt());
-            if (passWordPBKDF2.equals(queryUserBo.getPassWord())) {
-                Map<String,Object> claim = new HashMap<String, Object>();
-                claim.put("userId",queryUserBo.getUserId());
-                claim.put("userName",queryUserBo.getUserName());
-                token = JwtHelpor.getInstance().createToken(claim,SignatureAlgorithm.HS256,new Date(),CalendarFieldEnum.DEFAULT,30);
+
+            String errorRedisKEy = UserMoudleRedisKeyEnum.ERROR_LOGIN_COUNT_PREFIX.getKey().concat(String.valueOf(queryUserBo.getUserId()));
+            Integer errorInfo = (Integer) redisTemplate.opsForValue().get(errorRedisKEy);
+
+            if (errorInfo != null && errorInfo.intValue() >= 5) {
+                throw new BusinessException(SystemBusinessExceptionCodeEnum.ERROR_CODE.getBusinessCode(),"半个小时内错误登录次数超过5次");
             }
+
+            if (!PasswordPBKDF2.authenticate(passWord,queryUserBo.getPassWord(),queryUserBo.getSalt())) {
+                int loginCount = 0;
+                if (errorInfo == null) {
+                    loginCount = ERROR_LOGIN_COUNT;
+                    redisTemplate.opsForValue().set(errorRedisKEy,1,LIMIT_TIME,TimeUnit.MINUTES);
+                } else {
+                    loginCount = ERROR_LOGIN_COUNT - errorInfo.intValue();
+                    redisTemplate.opsForValue().increment(errorRedisKEy);
+                }
+                throw new BusinessException(SystemBusinessExceptionCodeEnum.ERROR_CODE.getBusinessCode(),"密码错误,剩余可登录次数:"+loginCount);
+            }
+
+            Map<String,Object> claim = new HashMap<String, Object>();
+            claim.put("userId",queryUserBo.getUserId());
+            claim.put("userName",queryUserBo.getUserName());
+            token = JwtHelpor.getInstance().createToken(claim,SignatureAlgorithm.HS256,new Date(),CalendarFieldEnum.DEFAULT,30);
+
         } catch (NoSuchAlgorithmException e) {
             logger.error("密码加密错误");
             throw new BusinessException(SystemBusinessExceptionCodeEnum.ERROR_CODE);
@@ -95,6 +122,7 @@ public class UserServiceImpl extends AbstractLog4j2Service<UserServiceImpl>
         }
 
         logger.info(token);
+
         return token;
     }
 }
