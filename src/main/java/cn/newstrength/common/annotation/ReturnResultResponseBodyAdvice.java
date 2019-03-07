@@ -1,4 +1,4 @@
-package cn.newstrength.core;
+package cn.newstrength.common.annotation;
 
 import cn.newstrength.common.result.CommonHasDataResult;
 import cn.newstrength.core.constant.SystemBusinessExceptionCodeEnum;
