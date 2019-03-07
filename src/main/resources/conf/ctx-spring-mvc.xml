@@ -15,6 +15,7 @@
     <context:annotation-config/>
     <context:component-scan base-package="cn.newstrength.*" use-default-filters="false">
         <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+        <context:include-filter type="annotation" expression="org.springframework.web.bind.annotation.ControllerAdvice"/>
     </context:component-scan>
 
     <!--配置访问页面资源-->
@@ -22,6 +23,7 @@
         <property name="prefix" value="/page/*"/>
         <property name="suffix" value=".jsp"/>
     </bean>
+    <mvc:resources mapping="/page/**" location="/page/"></mvc:resources>
     <!-- 统一异常 -->
     <bean id="exceptionHandler" class="cn.newstrength.core.exception.resolver.BusinessExceptionResolver" />
 
@@ -29,6 +31,7 @@
         <property name="defaultErrorView" value="/error"/>
         <property name="exceptionAttribute" value="ex"></property>
     </bean>
+
     <mvc:annotation-driven>
     <!-- 设置springMVC返回统一的时间格式，指定格式的时间不受影响，同时设置统一的GMT+8，解决夏令时差8个小时的问题 -->
         <mvc:message-converters>
@@ -51,17 +54,26 @@
                 <property name="supportedMediaTypes">
                     <list>
                         <value>text/html;charset=UTF-8</value>
+                        <!-- 设置支持json格式,防止ajax请求时返回的数据格式异常 -->
+                        <value>application/json; charset=UTF-8</value>
                     </list>
                 </property>
             </bean>
         </mvc:message-converters>
     </mvc:annotation-driven>
 
-<!--    <mvc:interceptors>
+    <mvc:interceptors>
         <mvc:interceptor>
+            <mvc:mapping path="/**"/>
+            <bean class="cn.newstrength.interceptor.TokenInterceptor"></bean>
+        </mvc:interceptor>
+        <!--<mvc:interceptor>
             <mvc:mapping path="/**"/>
             &lt;!&ndash;<mvc:exclude-mapping path="/login"/>&ndash;&gt;
             <bean class="cn.newstrength.interceptor.SessionInterceptor"/>
-        </mvc:interceptor>
-    </mvc:interceptors>-->
+        </mvc:interceptor>-->
+    </mvc:interceptors>
+    <mvc:cors>
+        <mvc:mapping path="/**" allowed-origins="*" allow-credentials="true" max-age="1800" allowed-methods="GET,POST,OPTIONS"/>
+    </mvc:cors>
 </beans>

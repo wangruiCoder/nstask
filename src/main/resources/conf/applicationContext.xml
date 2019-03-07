@@ -15,7 +15,7 @@
     <!-- Activate Cocoon Spring Configurator -->
     <context:annotation-config/>
 
-    <context:component-scan base-package="cn.newstrength.*" use-default-filters="true">
+    <context:component-scan base-package="cn.newstrength.*">
         <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
     </context:component-scan>
     <bean id="properties" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
