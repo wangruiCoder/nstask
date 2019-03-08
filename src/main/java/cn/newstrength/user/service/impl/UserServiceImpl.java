@@ -11,6 +11,10 @@ import cn.newstrength.core.service.BaseUpdateOneService;
 import cn.newstrength.user.constant.UserMoudleRedisKeyEnum;
 import cn.newstrength.user.dao.UserDao;
 import cn.newstrength.user.entity.UserBO;
+import cn.newstrength.user.pattern.state.ErrorLoginCountVerifyState;
+import cn.newstrength.user.pattern.state.NoUserVerifyState;
+import cn.newstrength.user.pattern.state.PasswordVerifyState;
+import cn.newstrength.user.pattern.state.VerifyContext;
 import cn.newstrength.user.service.UserService;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,10 +36,6 @@ public class UserServiceImpl extends AbstractLog4j2Service<UserServiceImpl>
         implements UserService,
         BaseInsertOneService<UserBO>,
         BaseUpdateOneService<UserBO> {
-
-    //错误登录次数限时范围
-    private static final Long LIMIT_TIME = 30L;
-    private static final int ERROR_LOGIN_COUNT = 5;
 
     @Autowired
     private UserDao userMapper;
@@ -85,43 +85,23 @@ public class UserServiceImpl extends AbstractLog4j2Service<UserServiceImpl>
         Map<String,String> quaryCondition= new HashMap<String,String>();
         quaryCondition.put("userName",userName);
         UserBO queryUserBo = userMapper.queryByUserName(quaryCondition);
-        String token = "";
 
-        try {
+        // 设置验证用户登录信息
+        VerifyContext context = new VerifyContext(redisTemplate,queryUserBo,passWord);
+        // 验证用户是否存在
+        context.setVerifyStateAndStartVerify(new NoUserVerifyState());
+        // 验证错误登录次数是否超过限制
+        context.setVerifyStateAndStartVerify(new ErrorLoginCountVerifyState());
+        // 验证密码是否正确
+        context.setVerifyStateAndStartVerify(new PasswordVerifyState());
 
-            String errorRedisKEy = UserMoudleRedisKeyEnum.ERROR_LOGIN_COUNT_PREFIX.getKey().concat(String.valueOf(queryUserBo.getUserId()));
-            Integer errorInfo = (Integer) redisTemplate.opsForValue().get(errorRedisKEy);
 
-            if (errorInfo != null && errorInfo.intValue() >= 5) {
-                throw new BusinessException(SystemBusinessExceptionCodeEnum.ERROR_CODE.getBusinessCode(),"半个小时内错误登录次数超过5次");
-            }
+        // 验证成功返回token
+        Map<String,Object> claim = new HashMap<String, Object>();
+        claim.put("userId",queryUserBo.getUserId());
+        claim.put("userName",queryUserBo.getUserName());
+        String token = JwtHelpor.getInstance().createToken(claim,SignatureAlgorithm.HS256,new Date(),CalendarFieldEnum.DEFAULT,30);
 
-            if (!PasswordPBKDF2.authenticate(passWord,queryUserBo.getPassWord(),queryUserBo.getSalt())) {
-                int loginCount = 0;
-                if (errorInfo == null) {
-                    loginCount = ERROR_LOGIN_COUNT;
-                    redisTemplate.opsForValue().set(errorRedisKEy,1,LIMIT_TIME,TimeUnit.MINUTES);
-                } else {
-                    loginCount = ERROR_LOGIN_COUNT - errorInfo.intValue();
-                    redisTemplate.opsForValue().increment(errorRedisKEy);
-                }
-                throw new BusinessException(SystemBusinessExceptionCodeEnum.ERROR_CODE.getBusinessCode(),"密码错误,剩余可登录次数:"+loginCount);
-            }
-
-            Map<String,Object> claim = new HashMap<String, Object>();
-            claim.put("userId",queryUserBo.getUserId());
-            claim.put("userName",queryUserBo.getUserName());
-            token = JwtHelpor.getInstance().createToken(claim,SignatureAlgorithm.HS256,new Date(),CalendarFieldEnum.DEFAULT,30);
-
-        } catch (NoSuchAlgorithmException e) {
-            logger.error("密码加密错误");
-            throw new BusinessException(SystemBusinessExceptionCodeEnum.ERROR_CODE);
-        } catch (InvalidKeySpecException e) {
-            logger.error("密码加密错误");
-            throw new BusinessException(SystemBusinessExceptionCodeEnum.ERROR_CODE);
-        }
-
-        logger.info(token);
 
         return token;
     }
