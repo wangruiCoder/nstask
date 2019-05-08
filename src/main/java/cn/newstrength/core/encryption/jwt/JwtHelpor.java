@@ -2,12 +2,9 @@ package cn.newstrength.core.encryption.jwt;
 
 import cn.newstrength.core.service.AbstractLog4j2Service;
 import io.jsonwebtoken.*;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import javax.crypto.spec.SecretKeySpec;
 import java.security.Key;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -18,10 +15,9 @@ import java.util.Map;
  * 本Jwt token生成是基于JJWT,更加详细的JJWT文档请参考官方api</p>
  * <p>当前工具类线程安全</p>
  * @author 王瑞
+ * @since 1.8
  */
 public class JwtHelpor extends AbstractLog4j2Service<JwtHelpor> {
-
-    private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     // 签名,建议使用数字字母组合。
     private static final String SECRET = "dddd";
@@ -110,16 +106,13 @@ public class JwtHelpor extends AbstractLog4j2Service<JwtHelpor> {
     public boolean verifyTokenExpired(String token, SignatureAlgorithm signatureAlgorithm){
         boolean expired = false;
 
-        long currentTime = new Date().getTime();
         initSignatureAlgorithm(signatureAlgorithm);
 
-        Jws<Claims> claimsJws = Jwts.parser().setSigningKey(getKey()).parseClaimsJws(token);
-        Claims body = claimsJws.getBody();
-        long expTime =  (long) body.get("exp");
-
-        if(currentTime > expTime){
+        try{
+            Jws<Claims> claimsJws = Jwts.parser().setSigningKey(getKey()).parseClaimsJws(token);
+        }catch (ExpiredJwtException ex){
             expired = true;
-            logger.info("token expired,expTime:"+this.simpleDateFormat.format(expTime)+" ,currentTime:"+this.simpleDateFormat.format(currentTime));
+            logger.info(ex.getMessage());
         }
 
         return expired;

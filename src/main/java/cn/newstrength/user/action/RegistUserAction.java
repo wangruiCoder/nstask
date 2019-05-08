@@ -23,4 +23,5 @@ public class RegistUserAction extends AbstractLog4j2Service<RegistUserAction> {
     public int registUser(UserBO userObj) throws RuntimeException {
         return insertOneObjectService.insertOne(userObj);
     }
+
 }
